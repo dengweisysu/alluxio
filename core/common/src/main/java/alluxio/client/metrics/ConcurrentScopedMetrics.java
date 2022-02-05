@@ -12,6 +12,7 @@
 package alluxio.client.metrics;
 
 import alluxio.client.quota.CacheScope;
+import alluxio.metrics.MetricsSystem;
 
 import java.util.Collections;
 import java.util.Map;
@@ -33,6 +34,7 @@ class ConcurrentScopedMetrics implements ScopedMetrics {
 
   @Override
   public long inc(CacheScope scope, ScopedMetricKey scopedMetricKey, long n) {
+    MetricsSystem.meter(scopedMetricKey.getName() + "." + scope.toString()).mark(n);
     return getMetricItem(scope).inc(scopedMetricKey, n);
   }
 
